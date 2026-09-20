@@ -5,6 +5,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 6f;
     [SerializeField] private float jumpForce = 12f;
+    [SerializeField] private float ladderMoveSpeed = 4f;
 
     [Header("Ground Check")]
     [SerializeField] private Transform groundCheck;
@@ -12,21 +13,30 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
 
     private Rigidbody2D rb;
+    private TimeTravel timeTravel;
     private float moveInput;
+    private float verticalInput;
     private bool isGrounded;
     private bool facingRight = true;
+    private bool isOnLadder;
+    private float defaultGravityScale;
+    private Vector3 spawnPosition;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        timeTravel = GetComponent<TimeTravel>();
+        spawnPosition = transform.position;
+        defaultGravityScale = rb.gravityScale;
     }
 
     private void Update()
     {
         moveInput = Input.GetAxisRaw("Horizontal");
+        verticalInput = Input.GetAxisRaw("Vertical");
         isGrounded = CheckGrounded();
 
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (!isOnLadder && Input.GetButtonDown("Jump") && isGrounded)
         {
             Jump();
         }
@@ -36,6 +46,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (isOnLadder)
+        {
+            rb.velocity = new Vector2(moveInput * ladderMoveSpeed, verticalInput * ladderMoveSpeed);
+            return;
+        }
+
         rb.velocity = new Vector2(moveInput * moveSpeed, rb.velocity.y);
     }
 
@@ -72,6 +88,40 @@ public class PlayerMovement : MonoBehaviour
         Vector3 localScale = transform.localScale;
         localScale.x *= -1f;
         transform.localScale = localScale;
+    }
+
+    public void EnterLadder()
+    {
+        isOnLadder = true;
+        rb.gravityScale = 0f;
+        rb.velocity = Vector2.zero;
+    }
+
+    public void ExitLadder()
+    {
+        isOnLadder = false;
+        rb.gravityScale = defaultGravityScale;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Deathzone"))
+        {
+            Respawn();
+        }
+    }
+
+    private void Respawn()
+    {
+        ExitLadder();
+
+        if (timeTravel != null)
+        {
+            timeTravel.ReturnToModernTime();
+        }
+
+        transform.position = spawnPosition;
+        rb.velocity = Vector2.zero;
     }
 
     private void OnDrawGizmosSelected()

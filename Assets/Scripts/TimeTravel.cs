@@ -9,6 +9,8 @@ public class TimeTravel : MonoBehaviour
 
     private bool isInPast;
 
+    public bool IsInPast => isInPast;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,6 +24,16 @@ public class TimeTravel : MonoBehaviour
         {
             ToggleTimeTravel();
         }
+    }
+
+    public void ReturnToModernTime()
+    {
+        if (!isInPast)
+        {
+            return;
+        }
+
+        ToggleTimeTravel();
     }
 
     private void ToggleTimeTravel()
