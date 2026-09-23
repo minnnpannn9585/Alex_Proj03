@@ -11,6 +11,12 @@ public class TimeTravel : MonoBehaviour
 
     public bool IsInPast => isInPast;
 
+    // Vertical world-space offset the character currently has purely because of time
+    // travelling. Entering the past moves the character down by travelDistance, so the
+    // offset is negative while in the past. Consumers (e.g. parallax) subtract this to
+    // ignore the discrete teleport when reacting to the character's position.
+    public float TimeTravelOffsetY => isInPast ? -travelDistance : 0f;
+
     // Start is called before the first frame update
     void Start()
     {
