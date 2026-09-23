@@ -5967,14 +5967,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3371341317351086980, guid: 31c6c734422c6544e89fadd9c20d1323, type: 3}
-      propertyPath: travelDistance
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 5306619506575885533, guid: 31c6c734422c6544e89fadd9c20d1323, type: 3}
-      propertyPath: m_Material
+    - target: {fileID: 2593767135925433084, guid: 31c6c734422c6544e89fadd9c20d1323, type: 3}
+      propertyPath: pastLayers.Array.data[0].layer
       value: 
-      objectReference: {fileID: 6200000, guid: 6534a5b45b54d2a4497feac58224d648, type: 2}
+      objectReference: {fileID: 1467734033}
+    - target: {fileID: 2593767135925433084, guid: 31c6c734422c6544e89fadd9c20d1323, type: 3}
+      propertyPath: presentLayers.Array.data[0].layer
+      value: 
+      objectReference: {fileID: 285053771}
     - target: {fileID: 5419071646931758246, guid: 31c6c734422c6544e89fadd9c20d1323, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.98
@@ -6019,87 +6019,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 6887650230007888256, guid: 31c6c734422c6544e89fadd9c20d1323, type: 3}
-      propertyPath: m_TagString
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 8152193869373796468, guid: 31c6c734422c6544e89fadd9c20d1323, type: 3}
-      propertyPath: jumpForce
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 8152193869373796468, guid: 31c6c734422c6544e89fadd9c20d1323, type: 3}
-      propertyPath: moveSpeed
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 9146136583282323815, guid: 31c6c734422c6544e89fadd9c20d1323, type: 3}
-      propertyPath: m_Color.b
-      value: 0.32166442
-      objectReference: {fileID: 0}
-    - target: {fileID: 9146136583282323815, guid: 31c6c734422c6544e89fadd9c20d1323, type: 3}
-      propertyPath: m_Color.g
-      value: 0.9559748
-      objectReference: {fileID: 0}
-    - target: {fileID: 9146136583282323815, guid: 31c6c734422c6544e89fadd9c20d1323, type: 3}
-      propertyPath: m_Color.r
-      value: 0.4513892
-      objectReference: {fileID: 0}
-    - target: {fileID: 9146136583282323815, guid: 31c6c734422c6544e89fadd9c20d1323, type: 3}
-      propertyPath: m_SortingOrder
-      value: 100
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 524121170183612961, guid: 31c6c734422c6544e89fadd9c20d1323, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1683325746}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31c6c734422c6544e89fadd9c20d1323, type: 3}
---- !u!114 &1683325743 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3371341317351086980, guid: 31c6c734422c6544e89fadd9c20d1323, type: 3}
-  m_PrefabInstance: {fileID: 1683325742}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca606deba0e1d49478bb195e8036417a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1683325744 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 966602494981748427, guid: 31c6c734422c6544e89fadd9c20d1323, type: 3}
-  m_PrefabInstance: {fileID: 1683325742}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1683325745 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 524121170183612961, guid: 31c6c734422c6544e89fadd9c20d1323, type: 3}
-  m_PrefabInstance: {fileID: 1683325742}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1683325746
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1683325745}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b80b68f4c5614435e89ad0f2f6e8799e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cameraTransform: {fileID: 1683325744}
-  timeTravel: {fileID: 1683325743}
-  presentLayers:
-  - layer: {fileID: 285053771}
-    parallaxFactor: {x: 0.1, y: 0.9}
-    infiniteHorizontal: 0
-    spriteWidth: 0
-  pastLayers:
-  - layer: {fileID: 1467734033}
-    parallaxFactor: {x: 0.1, y: 0.9}
-    infiniteHorizontal: 0
-    spriteWidth: 0
 --- !u!1 &1720991150
 GameObject:
   m_ObjectHideFlags: 0

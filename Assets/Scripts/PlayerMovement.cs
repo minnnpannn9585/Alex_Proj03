@@ -12,6 +12,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float groundCheckRadius = 0.2f;
     [SerializeField] private LayerMask groundLayer;
 
+    [Header("Visual")]
+    [Tooltip("Animator on the 'visual' child. Auto-found in children when left empty.")]
+    [SerializeField] private Animator animator;
+
+    private static readonly int IsMovingHash = Animator.StringToHash("isMoving");
+
     private Rigidbody2D rb;
     private TimeTravel timeTravel;
     private float moveInput;
@@ -28,6 +34,11 @@ public class PlayerMovement : MonoBehaviour
         timeTravel = GetComponent<TimeTravel>();
         spawnPosition = transform.position;
         defaultGravityScale = rb.gravityScale;
+
+        if (animator == null)
+        {
+            animator = GetComponentInChildren<Animator>();
+        }
     }
 
     private void Update()
@@ -42,6 +53,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         HandleFlip();
+        UpdateAnimation();
     }
 
     private void FixedUpdate()
@@ -80,6 +92,18 @@ public class PlayerMovement : MonoBehaviour
         {
             Flip();
         }
+    }
+
+    private void UpdateAnimation()
+    {
+        if (animator == null)
+        {
+            return;
+        }
+
+        bool isMoving = Mathf.Abs(moveInput) > 0.01f ||
+                        (isOnLadder && Mathf.Abs(verticalInput) > 0.01f);
+        animator.SetBool(IsMovingHash, isMoving);
     }
 
     private void Flip()
