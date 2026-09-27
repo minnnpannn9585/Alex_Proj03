@@ -44,6 +44,12 @@ public class TimeTravel : MonoBehaviour
 
     private void ToggleTimeTravel()
     {
+        PlayerMovement movement = GetComponent<PlayerMovement>();
+        if (movement != null)
+        {
+            movement.CancelSwing();
+        }
+
         float offsetY = isInPast ? travelDistance : -travelDistance;
         transform.position += new Vector3(0f, offsetY, 0f);
         isInPast = !isInPast;
