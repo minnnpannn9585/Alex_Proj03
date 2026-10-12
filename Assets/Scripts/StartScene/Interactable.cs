@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,12 +9,18 @@ using UnityEngine;
 public class Interactable : MonoBehaviour
 {
     public static readonly List<Interactable> Active = new List<Interactable>();
+    public static event Action<Interactable> Completed;
+
+    private static readonly HashSet<string> completedIds = new HashSet<string>();
+
+    [Tooltip("相同 id 只计一次。爸和妈都填 parents，这样跟其中一位说话就算和爸妈交互过。")]
+    [SerializeField] private string interactionId;
 
     [Tooltip("对话框左上角显示的名字。")]
     [SerializeField] private string speakerName;
 
     [Tooltip("靠近时提示里的动作，例如 交谈、阅读、查看。")]
-    [SerializeField] private string prompt = "交互";
+    [SerializeField] private string prompt = "Interact";
 
     [TextArea(2, 4)]
     [SerializeField] private string[] lines;
@@ -26,10 +33,21 @@ public class Interactable : MonoBehaviour
 
     private Collider2D bodyCollider;
     private SpriteRenderer spriteRenderer;
+    private bool completedSelf;
 
+    public string InteractionId => interactionId;
     public string Prompt => prompt;
     public Vector3 PromptPosition => transform.position + Vector3.up * promptHeight;
     public bool HasDialogue => lines != null && lines.Length > 0;
+    public bool IsCompleted => string.IsNullOrEmpty(interactionId) ? completedSelf : completedIds.Contains(interactionId);
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetState()
+    {
+        completedIds.Clear();
+        Active.Clear();
+        Completed = null;
+    }
 
     private void Awake()
     {
@@ -48,6 +66,10 @@ public class Interactable : MonoBehaviour
     private void OnDisable()
     {
         Active.Remove(this);
+        if (DialogueManager.Instance != null)
+        {
+            DialogueManager.Instance.Closed -= HandleDialogueClosed;
+        }
     }
 
     public float DistanceTo(Vector2 point)
@@ -74,12 +96,49 @@ public class Interactable : MonoBehaviour
 
         OnInteracted(interactor);
 
-        if (!HasDialogue || DialogueManager.Instance == null)
+        if (IsCompleted)
         {
             return;
         }
 
+        if (!HasDialogue || DialogueManager.Instance == null)
+        {
+            Complete();
+            return;
+        }
+
+        DialogueManager.Instance.Closed -= HandleDialogueClosed;
+        DialogueManager.Instance.Closed += HandleDialogueClosed;
         DialogueManager.Instance.StartDialogue(speakerName, lines);
+    }
+
+    private void HandleDialogueClosed()
+    {
+        if (DialogueManager.Instance != null)
+        {
+            DialogueManager.Instance.Closed -= HandleDialogueClosed;
+        }
+
+        Complete();
+    }
+
+    private void Complete()
+    {
+        if (IsCompleted)
+        {
+            return;
+        }
+
+        if (string.IsNullOrEmpty(interactionId))
+        {
+            completedSelf = true;
+        }
+        else
+        {
+            completedIds.Add(interactionId);
+        }
+
+        Completed?.Invoke(this);
     }
 
     protected virtual void OnInteracted(Transform interactor)

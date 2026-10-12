@@ -39,6 +39,7 @@ public class DialogueManager : MonoBehaviour
 
     public bool IsOpen { get; private set; }
     public bool CanStartInteraction => !IsOpen && !blockUntilRelease;
+    public event Action Closed;
 
     private void Awake()
     {
@@ -161,7 +162,7 @@ public class DialogueManager : MonoBehaviour
         }
 
         promptWorld = worldPosition;
-        string label = "按 E  " + prompt;
+        string label = "Press E  " + prompt;
         if (promptLabel != label)
         {
             promptLabel = label;
@@ -242,6 +243,7 @@ public class DialogueManager : MonoBehaviour
         IsOpen = false;
         panel.SetActive(false);
         blockUntilRelease = Input.GetKey(KeyCode.E);
+        Closed?.Invoke();
     }
 
     private static bool PressedAdvance()
@@ -274,7 +276,7 @@ public class DialogueManager : MonoBehaviour
         hintRect.pivot = new Vector2(0.5f, 1f);
         hintRect.sizeDelta = new Vector2(900f, 48f);
         hintRect.anchoredPosition = new Vector2(0f, -24f);
-        controlsHint.GetComponent<Text>().text = "WASD 移动     靠近后按 E 交互";
+        controlsHint.GetComponent<Text>().text = "WASD to move     Press E to interact";
 
         panel = CreateImageObject("Panel", canvasGo.transform, new Color(0.07f, 0.06f, 0.09f, 0.94f));
         RectTransform panelRect = panel.GetComponent<RectTransform>();
@@ -313,7 +315,7 @@ public class DialogueManager : MonoBehaviour
         continueRect.sizeDelta = new Vector2(320f, 36f);
         continueRect.anchoredPosition = new Vector2(-28f, 14f);
         hintText = continueObject.GetComponent<Text>();
-        hintText.text = "E / 空格 继续";
+        hintText.text = "E / Space to continue";
         continueObject.SetActive(false);
 
         promptRoot = CreateImageObject("Prompt", canvasGo.transform, new Color(0.05f, 0.05f, 0.07f, 0.9f));

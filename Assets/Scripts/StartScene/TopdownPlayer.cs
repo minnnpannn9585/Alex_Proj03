@@ -12,6 +12,10 @@ public class TopdownPlayer : MonoBehaviour
 
     private Rigidbody2D rb;
     private Vector2 moveInput;
+    private Camera viewCamera;
+    private Collider2D body;
+    private SpriteRenderer bodySprite;
+    private Vector2 reservedExtents;
 
     private void Awake()
     {
@@ -20,6 +24,7 @@ public class TopdownPlayer : MonoBehaviour
         rb.freezeRotation = true;
         rb.interpolation = RigidbodyInterpolation2D.Interpolate;
         rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+        body = GetComponent<Collider2D>();
 
         if (visual == null && transform.childCount > 0)
         {
@@ -30,6 +35,16 @@ public class TopdownPlayer : MonoBehaviour
         {
             animator = visual.GetComponent<Animator>();
         }
+
+        if (visual != null)
+        {
+            bodySprite = visual.GetComponent<SpriteRenderer>();
+        }
+    }
+
+    private void Start()
+    {
+        viewCamera = Camera.main;
     }
 
     private void Update()
@@ -53,7 +68,63 @@ public class TopdownPlayer : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.velocity = moveInput * moveSpeed;
+        float step = Time.fixedDeltaTime;
+        Vector2 next = rb.position + moveInput * moveSpeed * step;
+        next = ClampToCamera(next);
+        rb.velocity = step > 0f ? (next - rb.position) / step : Vector2.zero;
+    }
+
+    private Vector2 ClampToCamera(Vector2 position)
+    {
+        if (viewCamera == null)
+        {
+            viewCamera = Camera.main;
+        }
+
+        if (viewCamera == null || !viewCamera.orthographic)
+        {
+            return position;
+        }
+
+        Vector2 centerOffset = GetBodyCenterOffset();
+        float halfHeight = viewCamera.orthographicSize;
+        float halfWidth = halfHeight * viewCamera.aspect;
+        Vector2 cam = viewCamera.transform.position;
+        float minX = cam.x - halfWidth + reservedExtents.x;
+        float maxX = cam.x + halfWidth - reservedExtents.x;
+        float minY = cam.y - halfHeight + reservedExtents.y;
+        float maxY = cam.y + halfHeight - reservedExtents.y;
+
+        Vector2 center = position + centerOffset;
+        center.x = minX > maxX ? cam.x : Mathf.Clamp(center.x, minX, maxX);
+        center.y = minY > maxY ? cam.y : Mathf.Clamp(center.y, minY, maxY);
+        return center - centerOffset;
+    }
+
+    private Vector2 GetBodyCenterOffset()
+    {
+        bool hasBounds = false;
+        Bounds bounds = default;
+
+        if (bodySprite != null && bodySprite.sprite != null)
+        {
+            bounds = bodySprite.bounds;
+            hasBounds = true;
+        }
+        else if (body != null)
+        {
+            bounds = body.bounds;
+            hasBounds = true;
+        }
+
+        if (!hasBounds)
+        {
+            return Vector2.zero;
+        }
+
+        reservedExtents.x = Mathf.Max(reservedExtents.x, bounds.extents.x);
+        reservedExtents.y = Mathf.Max(reservedExtents.y, bounds.extents.y);
+        return (Vector2)bounds.center - (Vector2)transform.position;
     }
 
     private bool IsMovementLocked()
@@ -101,7 +172,7 @@ public class TopdownPlayer : MonoBehaviour
         for (int i = 0; i < Interactable.Active.Count; i++)
         {
             Interactable candidate = Interactable.Active[i];
-            if (candidate == null || !candidate.HasDialogue)
+            if (candidate == null || !candidate.HasDialogue || candidate.IsCompleted)
             {
                 continue;
             }
