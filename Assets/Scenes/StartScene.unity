@@ -709,7 +709,10 @@ MonoBehaviour:
   speakerName: Flute
   prompt: Take
   lines:
-  - "This is Grandpa's flute. Take it, and you can travel through time."
+  - This is Grandpa's flute. The wood is still warm, as if he just set it down.
+  - The summer from the photo feels close enough to touch.
+  - Take it, and you can travel through time.
+  - One breath, and that old day opens.
   facePlayer: 0
   promptHeight: 0.8
 --- !u!114 &910000352
@@ -855,7 +858,10 @@ MonoBehaviour:
   speakerName: Dad
   prompt: Talk
   lines:
-  - The books go in the box marked Keep. I think I labeled it wrong again.
+  - The books go in the box marked Keep, though I think I labeled it wrong again.
+  - We're leaving your grandpa's house tomorrow. He built these shelves himself.
+  - He used to play his flute upstairs. He said the notes could call an old day back.
+  - Look at the photo before we pack it, and try not to step on your brother's river.
   facePlayer: 1
   promptHeight: 1.6
 --- !u!61 &910000302
@@ -920,6 +926,9 @@ MonoBehaviour:
   prompt: Talk
   lines:
   - That box was marked Ship. Then I changed my mind.
+  - We can buy new plates. We can't replace what your grandpa left behind.
+  - The photo on the wall is the summer festival. He still has the flute in his hands.
+  - It's waiting upstairs. He always said it should go to you.
   facePlayer: 1
   promptHeight: 1.6
 --- !u!61 &910000312
@@ -983,7 +992,10 @@ MonoBehaviour:
   speakerName: Brother
   prompt: Talk
   lines:
-  - "Don't step on my river. I'm bringing all these toys when we move."
+  - Don't step on my river. I'm bringing all these toys when we move.
+  - Grandpa made the little boats. He said this river runs all the way to the festival.
+  - Mom says everything has to be in a box tonight. I don't want to leave his house.
+  - The flute upstairs is his. He told me it belongs to you.
   facePlayer: 1
   promptHeight: 1.1
 --- !u!61 &910000322
@@ -1048,6 +1060,9 @@ MonoBehaviour:
   prompt: Look
   lines:
   - A photo from a summer festival. Everyone looks younger.
+  - Grandpa stands in the middle, laughing, with the flute at his lips.
+  - The lanterns behind him are the same ones still sitting in the hall closet.
+  - "On the back, his handwriting reads: For the one who comes after."
   facePlayer: 0
   promptHeight: 0.4
 --- !u!114 &910000341
@@ -1075,7 +1090,7 @@ MonoBehaviour:
   - {fileID: 1968548697}
   - {fileID: 240429285}
   secondFloor: {fileID: 115782488}
-  blockedLine: Talk to your parents, the painting, and your brother before going upstairs.
+  blockedLine: Talk to your parents, look at the photo, and see your brother before going upstairs.
 --- !u!1 &910001101
 GameObject:
   m_ObjectHideFlags: 0

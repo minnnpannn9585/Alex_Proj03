@@ -10,7 +10,7 @@ public class FloorTransition : MonoBehaviour
     [SerializeField] private string[] requiredIds = { "parents", "painting", "brother" };
     [SerializeField] private GameObject[] firstFloor;
     [SerializeField] private GameObject secondFloor;
-    [SerializeField] private string blockedLine = "Talk to your parents, the painting, and your brother before going upstairs.";
+    [SerializeField] private string blockedLine = "Talk to your parents, look at the photo, and see your brother before going upstairs.";
 
     private readonly HashSet<string> completed = new HashSet<string>();
     private Vector3 startPosition;
